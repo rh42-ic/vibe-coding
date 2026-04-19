@@ -1,0 +1,39 @@
+# Verible Verilog Format Configuration File
+# Generated with base preset: Strict Alignment (强制深度对齐风格)
+
+# --- 基础配置 (General) ---
+--column_limit=120
+--indentation_spaces=4
+--wrap_spaces=4
+--line_terminator=LF
+
+# --- 对齐配置 (Alignment) ---
+--assignment_statement_alignment=align
+--enum_assignment_statement_alignment=align
+--case_items_alignment=align
+--class_member_variable_alignment=align
+--distribution_items_alignment=align
+--formal_parameters_alignment=align
+--module_net_variable_alignment=align
+--named_parameter_alignment=align
+--named_port_alignment=align
+--port_declarations_alignment=align
+--struct_union_members_alignment=align
+
+# --- 惩罚权重 (Penalties) ---
+--line_break_penalty=2
+--over_column_limit_penalty=100
+
+# --- 换行缩进 (Indentation & Wrapping) ---
+--formal_parameters_indentation=wrap
+--named_parameter_indentation=wrap
+--named_port_indentation=wrap
+--port_declarations_indentation=wrap
+--wrap_end_else_clauses=true
+--expand_coverpoints=false
+--compact_indexing_and_selections=true
+--try_wrap_long_lines=true
+
+# --- 细节控制 (Detail Control) ---
+--port_declarations_right_align_packed_dimensions=true
+--port_declarations_right_align_unpacked_dimensions=true
