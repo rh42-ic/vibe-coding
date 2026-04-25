@@ -33,9 +33,17 @@ While ensuring 100% synthesizability, we should maximize the code's level of abs
 2. A multi-bit type or a parameterized type should be defined before being declared.
 3. The purpose of signal declarations and type definitions is to reflect their semantics as much as possible. Naming, prefixes, and suffixes should serve this goal.
 4. Use packed data structures and interfaces to bundle signals, reducing scattered loose wires.
-5. Do not add redundant, obvious comments to every signal and procedural block. Write self-explanatory code through naming and logical data structures. Comments should only be used for complex algorithms or high-level architectural intent.
-6. Control submodule length: unless there is a justifiable reason, forbid creating modules exceeding 1,000 lines.
-7. Control the number of submodule interfaces, use interfaces and structs to reduce the number of ports.
+5. Control submodule length: unless there is a justifiable reason, forbid creating modules exceeding 1,000 lines.
+6. Control the number of submodule interfaces, use interfaces and structs to reduce the number of ports.
+
+## 1.3 Commenting Standard
+
+High-quality comments should supplement the code, not translate it line-by-line. The core principles include the following four points:
+
+1. **Module Header**: Every `module` must contain a header comment that clearly explains the overall functionality, design intent, and usage constraints of the module.
+2. **Ports & Parameters**: All `parameter` and `port` declarations must be accompanied by concise comments explaining their purpose, valid range, or protocol association.
+3. **Logical Partitioning**: Internal logic should be reasonably partitioned, with prominent delimiters and titles added for each partition to improve code readability and structure.
+4. **Self-Documenting Code**: Avoid adding meaningless, obvious, and repetitive comments to every signal or procedural block. Prioritize making the code "self-documenting" through precise naming and logical data structures. Comments should be reserved for explaining complex algorithms, special design trade-offs, or high-level architectural intent.
 
 ## 2. Syntax
 
@@ -99,7 +107,7 @@ Code should be self-documenting through accurate signal naming while rejecting d
 
 - `type` should use the `_t` suffix.
 - `modport` uses the `_mp` suffix.
-- `enum` uses the `_e` suffix.
+- `enum` should be `typedef`ed and use the `_e` suffix.
 - `struct` should be `typedef`ed and use the `_t` or `_s` suffix.
 
 ### 3.3 Constants and Macros
@@ -169,6 +177,15 @@ When implementing a true state machine (FSM), follow the 3-segment structure:
 ### 5.3 X-Propagation
 
 Beware of simulation/synthesis mismatches caused by control signals entering an X state within `case` and `if` constructs. Even SystemVerilog lacks a perfect solution at the syntax level. When simulating with EDA tools, ensure the X-Propagation option is enabled and an X-Pessimism mode is selected.
+
+### 5.4 CDC
+
+Clock domain crossing (CDC) requires asynchronous sampling circuits. In zero-delay RTL simulations, asynchronous sampling is always in an ideal state. Discovering CDC errors relies on:
+
+1. Formal verification. Some linting tools that can directly check CDC circuit architectures.
+2. Injecting mis-sampleings during simulation.
+
+The latter requires forbidding "writing CDC circuits manually on the spot in the code". CDC circuits should instantiate modules from a mature CDC library, utilizing their standard forms and mis-sampleings injection capabilities. If such a CDC library cannot be provided, at the very least, asynchronous sampling should be written into a separate module.
 
 ## 6. ASIC PPA Optimization
 
